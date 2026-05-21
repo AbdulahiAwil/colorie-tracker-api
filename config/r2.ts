@@ -1,5 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { config } from "./config.js";
+
+
 const r2Client = new S3Client({
     region:"auto",
     endpoint: `https://${config.r2AccountId}.r2.cloudflarestorage.com`,
