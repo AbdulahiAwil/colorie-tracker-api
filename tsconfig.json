@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "lib": ["ES2022"],
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "rootDir": "./",
     "outDir": "./dist",
     "sourceMap": true,
@@ -23,3 +23,4 @@
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
+
