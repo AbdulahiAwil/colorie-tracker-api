@@ -1,4 +1,4 @@
-import { zodResponseFormat } from "openai/helpers/zod.mjs";
+import { zodResponseFormat } from "openai/helpers/zod";
 import { OpenAI } from "openai";
 import { z } from "zod";
 
