@@ -13,6 +13,8 @@ export const register = async(req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, name, dailyColorieGoal } = req.body;
 
+         console.log("req.body:", req.body);
+
         if(!email || !password || !name){
             res.json({message: "All fields are required"})
             return;
