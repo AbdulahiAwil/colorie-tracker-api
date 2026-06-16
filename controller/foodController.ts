@@ -238,3 +238,46 @@ export const discardAnalyzedFood = async(req: Request , res: Response): Promise<
     }
 }
 
+export const getEntries = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Not authorized' });
+      return;
+    }
+
+    const { date, startDate, endDate, limit = '50' } = req.query;
+
+    let query: Record<string, unknown> = { userId: req.user._id };
+
+    // Filter by specific date
+    if (date && typeof date === 'string') {
+      const targetDate = new Date(date);
+      const startOfDay = new Date(targetDate);
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(targetDate);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      query.timestamp = { $gte: startOfDay, $lte: endOfDay };
+    }
+
+    // Filter by date range
+    if (startDate && endDate && typeof startDate === 'string' && typeof endDate === 'string') {
+      query.timestamp = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    // query structure { userId: req.user._id, timestamp: { $gte: startOfDay, $lte: endOfDay } }
+
+    const entries = await FoodEntry.find(query)
+      .sort({ timestamp: -1 })
+      .limit(parseInt(limit as string));
+
+    res.json(entries);
+  } catch (error) {
+    console.error('Get entries error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    res.status(500).json({ message: errorMessage });
+  }
+};
